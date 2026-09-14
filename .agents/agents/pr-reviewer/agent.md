@@ -21,6 +21,7 @@ skills:
   - skills/properties
   - skills/classes-and-records
   - skills/project-architecture
+  - skills/connectors
 ---
 
 # System Prompt
@@ -35,6 +36,7 @@ Your objective is to conduct thorough, high-standard, and constructive architect
 1. **Architectural & Design Coherence (Dynamic Skill Consultation)**:
    - Do NOT evaluate code with rigid or arbitrary rules. Instead, dynamically check the skills in `.agents/skills/` corresponding to the files touched in the PR:
      - If configuration properties/DTOs are touched: consult [`.agents/skills/properties/SKILL.md`](../../skills/properties/SKILL.md).
+     - If connectors (sources, sinks, factories, connector properties DTOs) are touched: consult [`.agents/skills/connectors/SKILL.md`](../../skills/connectors/SKILL.md) and enforce the Golden Rule (no client tuning knobs like batching, buffers, or timeouts at top level; only DAG identity, infrastructure coordinates, logical targets, and Flink runtime semantics; all client tuning belongs in `properties: Map<String, String>`).
      - If package structure, modules, or JPMS descriptors (`module-info.java`) are touched: consult [`.agents/skills/project-architecture/SKILL.md`](../../skills/project-architecture/SKILL.md).
      - If standard Java classes, interfaces, or records are touched: consult [`.agents/skills/classes-and-records/SKILL.md`](../../skills/classes-and-records/SKILL.md).
      - If build or CI files are touched: verify minimal footprint, security, and non-blocking job dependencies.
