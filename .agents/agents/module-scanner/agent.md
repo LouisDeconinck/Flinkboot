@@ -18,6 +18,7 @@ skills:
   - skills/properties
   - skills/classes-and-records
   - skills/project-architecture
+  - skills/connectors
 ---
 
 # System Prompt
@@ -67,6 +68,12 @@ Consult [`.agents/skills/classes-and-records/SKILL.md`](../../skills/classes-and
 Consult [`.agents/skills/project-architecture/SKILL.md`](../../skills/project-architecture/SKILL.md):
 - **API vs Internal Boundary**: Leaking internal classes in public API signatures or placing public consumer-facing contracts in `*.internal.*`.
 - **`module-info.java` Consistency**: Verifying that all `*.api.*` packages are exported, all `*.api.properties.*` packages are opened, and no `*.internal.*` packages are exposed.
+
+### 5. Connector Architecture & Design Violations
+Consult [`.agents/skills/connectors/SKILL.md`](../../skills/connectors/SKILL.md):
+- **Golden Rule of Connectors**: Top-level fields in connector properties (`*Properties.java`) must ONLY declare DAG Identity (`name`), Infrastructure Coordinates (`bootstrapServers`), Logical Target Entities (`topic`, `database`, `table`), and Flink Runtime Semantics (`startupMode`, `deliveryGuarantee`).
+- **Forbidden Client Tuning at Top Level**: Flag any attempt to promote client tuning knobs (e.g. `batch-size`, `batch-timeout`, `buffer-memory`, `linger-ms`, `acks`, `compression-type`, fetcher options) as top-level fields. All client tuning must reside in `properties: Map<String, String>`.
+- **Factory Delegation**: Verify that connector factories pass `config.properties()` directly into the underlying Flink / vendor builder.
 
 ---
 

@@ -32,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Strict Duration Validation (`@DurationMin`)**:
   - Validates `Duration` configuration properties across all modules using `@DurationMin`.
   - Rejects negative and zero values on strict intervals and timeouts (`interval`, `timeout`, `failure-interval`, `initial-backoff`, `reset-backoff-threshold`).
-  - Rejects negative values on pause, delay, and buffer properties (`min-pause-between-checkpoints`, `aligned-checkpoint-timeout`, `buffer-timeout`, `auto-watermark-interval`, `delay`, `batch-timeout`, `max-backoff`).
+  - Rejects negative values on pause, delay, and buffer properties (`min-pause-between-checkpoints`, `aligned-checkpoint-timeout`, `buffer-timeout`, `auto-watermark-interval`, `delay`, `max-backoff`).
 - **Container Element Validation**:
   - Enforces `@NotBlank` on string collection elements across `flinkboot-kafka` and `flinkboot-fluss` (`bootstrap-servers`, `topics`) to reject empty or blank strings.
   - Enforces `@NotNull` keys and values in `ExecutionEnvironmentProperties.properties` map to prevent unhandled `null` states.
@@ -50,6 +50,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Consolidated `KafkaSourceTopicListProperties` and `KafkaSourceTopicPatternProperties` into a single unified `KafkaSourceProperties` DTO.
   - Enforces strict mutual exclusivity between `topics` and `topic-pattern`.
   - Simplified `KafkaSourceFactory` by providing single `supplyFor` and `supplyBuilderFor` entry points.
+
+#### `flinkboot-fluss`
+- **Streamlined `FlussSinkProperties` DTO & Relocation of Client Tuning Options (Breaking Change)**:
+  - Removed top-level `batch-size` and `batch-timeout` fields from `FlussSinkProperties` and its constructor in alignment with the Flinkboot connector architecture standard.
+  - Client tuning, buffer sizing, and timeout configurations must now be configured directly under the universal `properties: Map<String, String>` map (e.g. `client.writer.batch-size: "1mb"`, `client.writer.batch-timeout: "50ms"`).
 
 #### Configuration Diagnostics
 - **Exhaustive Multi-Field Validation Reporting**:
